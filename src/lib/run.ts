@@ -3,9 +3,10 @@ import type { Settings } from './db'
 import type { DemoFixture } from './demo'
 import { AnalysisError, analyzeDemo, analyzePage, type Progress, type Stats, type StreamHandlers } from './gemini'
 import type { Analysis, Layout, Sentence } from '../prompts/schema'
+import { saveRecord } from './records'
 
 /**
- * 진행 중이거나 방금 끝난 분석 하나. 5단계에서 끝난 결과를 IndexedDB 기록으로 옮긴다.
+ * 진행 중이거나 방금 끝난 분석 하나. 끝나면 이미지가 있는 분석은 IndexedDB 기록으로 저장한다.
  * 결과 화면은 useRun()으로 구독해 문장이 도착하는 대로 그린다.
  */
 export interface RunState {
@@ -21,12 +22,17 @@ export interface RunState {
   error?: Error
   image: Blob | null
   source: string
+  /** 저장된 기록 id(저장이 끝난 뒤) */
+  recordId?: number
+  saveError?: string
 }
 
 interface RunInput {
   image: Blob | null
   settings: Settings
   demo?: DemoFixture
+  /** 캐시 키(lib/records.ts cacheKey). 있으면 끝난 뒤 이 키로 기록을 저장한다. */
+  hash?: string
 }
 
 let state: RunState | null = null
@@ -83,7 +89,17 @@ export function startRun(input: RunInput) {
     : analyzePage({ image: input.image!, settings: input.settings, signal: ctrl.signal, handlers })
 
   task
-    .then(({ analysis, raw, stats }) => set(id, { status: 'done', ...fromAnalysis(analysis), raw, stats }))
+    .then(({ analysis, raw, stats }) => {
+      set(id, { status: 'done', ...fromAnalysis(analysis), raw, stats })
+      const { image, hash, demo, settings } = input
+      if (!image || !hash) return
+      saveRecord({ hash, image, analysis, stats, model: demo ? `데모: ${demo.label}` : settings.model, demoKey: demo?.key })
+        .then((recordId) => set(id, { recordId }))
+        .catch((e) => {
+          console.error('[analysis] 기록 저장 실패', e)
+          set(id, { saveError: e instanceof Error ? e.message : String(e) })
+        })
+    })
     .catch((e) => set(id, { status: 'error', error: e instanceof Error ? e : new Error(String(e)), raw: e instanceof AnalysisError ? e.raw : undefined }))
     .finally(() => {
       if (controller === ctrl) controller = null

@@ -1,4 +1,6 @@
 import Dexie, { type EntityTable } from 'dexie'
+import type { Analysis } from '../prompts/schema'
+import type { Stats } from './gemini'
 
 export type JlptLevel = 'N5' | 'N4' | 'N3' | 'N2' | 'N1'
 export type FuriganaMode = 'all' | 'level' | 'none'
@@ -28,16 +30,23 @@ export const DEFAULT_SETTINGS: Settings = {
   showStats: true,
 }
 
-/** 분석 기록. analysis는 3단계에서 zod 타입으로 좁힌다. */
+/** 분석 기록. 같은 hash(전송 이미지의 SHA-256)가 있으면 API를 부르지 않고 이 기록을 쓴다. */
 export interface AnalysisRecord {
   id?: number
+  /** 데모 결과는 실제 결과와 섞이지 않게 "demo:<fixture>:" 접두어를 붙인다(lib/records.ts) */
   hash: string
   createdAt: number
+  /** 분석한 모델 이름, 데모면 데모 이름 */
   model: string
+  /** 데모로 만든 기록이면 fixture 키 */
+  demoKey?: string
   image: Blob
-  thumbnail: Blob
+  /** 목록용 작은 JPEG data URL */
+  thumbnail: string
   firstSentence: string
-  analysis: unknown
+  /** 앱 내부 형식(기본값을 채운 것) */
+  analysis: Analysis
+  stats?: Stats
 }
 
 export interface VocabEntry {

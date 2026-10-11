@@ -7,6 +7,7 @@ import { useSettings } from '../lib/settings'
 import { cropAndResize, loadOriented, rotate90, toBlob } from '../lib/image'
 import { DEMO_FIXTURES } from '../lib/demo'
 import { startRun } from '../lib/run'
+import { cacheKey, findRecordByHash } from '../lib/records'
 
 const INITIAL_CROP: PercentCrop = { unit: '%', x: 4, y: 4, width: 92, height: 92 }
 
@@ -64,7 +65,14 @@ export default function ScanPage() {
     const rect = crop.width && crop.height ? { x: crop.x / 100, y: crop.y / 100, width: crop.width / 100, height: crop.height / 100 } : { x: 0, y: 0, width: 1, height: 1 }
     const { blob } = await cropAndResize(work, rect)
     const demo = settings.demoMode ? DEMO_FIXTURES.find((f) => f.key === demoKey) : undefined
-    startRun({ image: blob, settings, demo })
+    // 같은 이미지를 이미 분석했으면 API를 부르지 않고 저장된 결과를 연다.
+    const hash = await cacheKey(blob, demo)
+    const cached = await findRecordByHash(hash)
+    if (cached?.id !== undefined) {
+      navigate(`/result/${cached.id}?cached=1`)
+      return
+    }
+    startRun({ image: blob, settings, demo, hash })
     navigate('/result/latest')
   }
 

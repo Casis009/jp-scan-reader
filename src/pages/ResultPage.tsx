@@ -1,12 +1,16 @@
-import { useEffect, useMemo, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
-import type { FuriganaMode } from '../lib/db'
+import { useEffect, useMemo, useState, type ReactNode } from 'react'
+import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { useLiveQuery } from 'dexie-react-hooks'
+import { db, type FuriganaMode } from '../lib/db'
 import { saveSetting, useSettings } from '../lib/settings'
-import { cancelRun, lastRunModel, retryRun, useRun, type RunState } from '../lib/run'
+import { cancelRun, lastRunModel, retryRun, startRun, useRun, type RunState } from '../lib/run'
 import { nextModel } from '../lib/models'
 import { getPendingFile } from '../lib/pending'
 import { prepareForDisplay } from '../lib/display'
-import { AnalysisError, type Progress } from '../lib/gemini'
+import { DEMO_FIXTURES } from '../lib/demo'
+import { deleteRecord } from '../lib/records'
+import { AnalysisError, type Progress, type Stats } from '../lib/gemini'
+import type { Layout, Sentence } from '../prompts/schema'
 import { SentenceCard, type Selection } from '../components/SentenceCard'
 import { BottomSheet } from '../components/BottomSheet'
 import { WordSheet } from '../components/WordSheet'
@@ -34,41 +38,156 @@ function progressText(p: Progress): string {
 
 export default function ResultPage() {
   const { id } = useParams()
-  // 5단계에서 저장된 기록(id)을 읽도록 바뀐다. 지금은 진행 중이거나 방금 끝난 분석만 있다.
   const live = useRun()
-  const run = id === 'latest' ? live : null
+  const location = useLocation()
+  const recordId = id === 'latest' ? null : Number(id)
+  // 방금 끝나 저장되면서 주소만 바뀐 경우에는 진행 화면을 그대로 이어서 보여 준다(읽던 위치·열린 번역 유지).
+  // 홈 목록이나 캐시로 연 경우(fromLive 없음)는 저장된 기록을 연다.
+  const fromLive = (location.state as { fromLive?: boolean } | null)?.fromLive === true
+  if (id === 'latest' || (fromLive && live?.recordId === recordId)) return <LiveResult run={live} />
+  return <RecordResult id={recordId!} />
+}
+
+function LiveResult({ run }: { run: RunState | null }) {
+  const { id } = useParams()
+  const navigate = useNavigate()
+
+  // 저장이 끝나면 주소를 기록 주소로 바꾼다. 같은 컴포넌트가 그대로 이어진다.
+  useEffect(() => {
+    if (id === 'latest' && run?.recordId !== undefined) navigate(`/result/${run.recordId}`, { replace: true, state: { fromLive: true } })
+  }, [id, run?.recordId, navigate])
+
+  if (!run) return <Empty text="표시할 결과가 없습니다." />
+
+  return (
+    <ResultView
+      layout={run.layout}
+      pageNote={run.pageNote}
+      sentences={run.sentences}
+      image={run.image}
+      source={run.source}
+      stats={run.status === 'done' ? run.stats : undefined}
+      json={run.status === 'done' ? run.raw : undefined}
+      recordId={run.recordId ?? null}
+      running={run.status === 'running'}
+      emptyText={run.status === 'done' ? '판독된 문장이 없습니다.' : null}
+    >
+      {run.status === 'error' && run.error && <ErrorBox run={run} onRecrop={getPendingFile() ? () => navigate('/scan') : undefined} />}
+      {run.saveError && <p className="notice">기록 저장에 실패했습니다: {run.saveError}</p>}
+      {run.status === 'done' && run.recordId !== undefined && <RecordActions id={run.recordId} />}
+      {run.status === 'running' && <ProgressBar run={run} />}
+    </ResultView>
+  )
+}
+
+function RecordResult({ id }: { id: number }) {
+  const record = useLiveQuery(() => db.records.get(id).then((r) => r ?? null), [id])
+  const [params] = useSearchParams()
+
+  if (record === undefined) return <main className="page" />
+  if (record === null) return <Empty text="기록을 찾을 수 없습니다. 삭제되었을 수 있습니다." />
+
+  return (
+    <ResultView
+      layout={record.analysis.layout}
+      pageNote={record.analysis.pageNote}
+      sentences={record.analysis.sentences}
+      image={record.image}
+      source={`${record.model} · ${new Date(record.createdAt).toLocaleString('ko-KR', { dateStyle: 'short', timeStyle: 'short' })}`}
+      stats={record.stats}
+      json={JSON.stringify(record.analysis, null, 2)}
+      recordId={id}
+      running={false}
+      emptyText="판독된 문장이 없습니다."
+      notice={params.get('cached') ? '이미 분석한 사진이라 저장된 결과를 불러왔습니다. API는 호출하지 않았습니다.' : null}
+    >
+      <RecordActions id={id} />
+    </ResultView>
+  )
+}
+
+/** 저장된 기록의 [새로 분석]·[기록 삭제] */
+function RecordActions({ id }: { id: number }) {
+  const record = useLiveQuery(() => db.records.get(id), [id])
   const settings = useSettings()
   const navigate = useNavigate()
-  const display = useMemo(
-    () => (run ? prepareForDisplay({ layout: run.layout ?? { direction: 'vertical', confidence: 0 }, pageNote: run.pageNote, sentences: run.sentences }) : null),
-    [run],
+  const [confirmDelete, setConfirmDelete] = useState(false)
+  if (!record || !settings) return null
+
+  const demo = record.demoKey ? DEMO_FIXTURES.find((f) => f.key === record.demoKey) : undefined
+  const canReanalyze = !record.demoKey || demo !== undefined
+
+  // 캐시를 건너뛰고 API를 다시 부른다. 끝나면 같은 기록을 새 결과로 덮어쓴다.
+  const reanalyze = () => {
+    startRun({ image: record.image, settings, demo, hash: record.hash })
+    navigate('/result/latest')
+  }
+  const remove = async () => {
+    await deleteRecord(id)
+    navigate('/', { replace: true })
+  }
+
+  return (
+    <div className="row" style={{ flexWrap: 'wrap' }}>
+      {canReanalyze && (
+        <button className="btn" style={{ flex: 1 }} onClick={reanalyze}>
+          새로 분석
+        </button>
+      )}
+      {confirmDelete ? (
+        <>
+          <button className="btn" style={{ flex: 1 }} onClick={() => setConfirmDelete(false)}>
+            취소
+          </button>
+          <button className="btn btn-danger" style={{ flex: 1 }} onClick={remove}>
+            삭제 확인
+          </button>
+        </>
+      ) : (
+        <button className="btn btn-danger" style={{ flex: 1 }} onClick={() => setConfirmDelete(true)}>
+          기록 삭제
+        </button>
+      )}
+    </div>
   )
+}
+
+interface ViewProps {
+  layout: Layout | null
+  pageNote: string | null
+  sentences: Sentence[]
+  image: Blob | null
+  source: string
+  stats?: Stats
+  /** "원시 JSON"에 보여 줄 내용 */
+  json?: string
+  recordId: number | null
+  running: boolean
+  emptyText: string | null
+  notice?: string | null
+  /** 문장 목록 아래에 놓을 오류·동작 버튼 등 */
+  children?: ReactNode
+}
+
+function ResultView({ layout, pageNote, sentences, image, source, stats, json, recordId, running, emptyText, notice, children }: ViewProps) {
+  const settings = useSettings()
+  const display = useMemo(() => prepareForDisplay({ layout: layout ?? { direction: 'vertical', confidence: 0 }, pageNote, sentences }), [layout, pageNote, sentences])
   const [selection, setSelection] = useState<Selection | null>(null)
   const [photoUrl, setPhotoUrl] = useState<string | null>(null)
 
   useEffect(() => () => void (photoUrl && URL.revokeObjectURL(photoUrl)), [photoUrl])
 
-  if (!run || !display) {
-    return (
-      <main className="page stack">
-        <h1>분석 결과</h1>
-        <p className="dim">표시할 결과가 없습니다. 기록 저장은 5단계에서 추가됩니다.</p>
-        <Link to="/">홈으로</Link>
-      </main>
-    )
-  }
   if (!settings) return <main className="page" />
 
-  const togglePhoto = () => setPhotoUrl(photoUrl || !run.image ? null : URL.createObjectURL(run.image))
-  const { sentences } = display
-  const running = run.status === 'running'
+  const togglePhoto = () => setPhotoUrl(photoUrl || !image ? null : URL.createObjectURL(image))
 
   return (
     <main className={`page stack${running ? ' with-progress' : ''}`}>
       <h1>분석 결과</h1>
       <p className="dim small">
-        {run.layout ? DIRECTION_LABEL[run.layout.direction] : '방향 판독 중'} · 문장 {sentences.length}개 · {run.source}
+        {layout ? DIRECTION_LABEL[layout.direction] : '방향 판독 중'} · 문장 {display.sentences.length}개 · {source}
       </p>
+      {notice && <p className="notice">{notice}</p>}
 
       <div className="segmented" role="group" aria-label="후리가나 표시">
         {FURIGANA_MODES.map((m) => (
@@ -78,9 +197,9 @@ export default function ResultPage() {
         ))}
       </div>
 
-      {run.pageNote && <p className="notice">{run.pageNote}</p>}
+      {pageNote && <p className="notice">{pageNote}</p>}
 
-      {run.image && (
+      {image && (
         <div className="stack">
           <button className="btn" onClick={togglePhoto}>
             {photoUrl ? '원본 사진 닫기' : '원본 사진 보기'}
@@ -89,9 +208,9 @@ export default function ResultPage() {
         </div>
       )}
 
-      {run.status === 'done' && sentences.length === 0 && <p className="dim">판독된 문장이 없습니다.</p>}
+      {emptyText && display.sentences.length === 0 && <p className="dim">{emptyText}</p>}
 
-      {sentences.map((s) => (
+      {display.sentences.map((s) => (
         <SentenceCard
           key={s.id}
           sentence={s}
@@ -102,22 +221,30 @@ export default function ResultPage() {
         />
       ))}
 
-      {run.status === 'error' && run.error && <ErrorBox run={run} onRecrop={getPendingFile() ? () => navigate('/scan') : undefined} />}
+      {children}
 
-      {run.status === 'done' && (
+      {json !== undefined && (
         <details className="card">
           <summary className="small">원시 JSON</summary>
-          <pre className="raw-json">{run.raw}</pre>
+          <pre className="raw-json">{json}</pre>
         </details>
       )}
 
-      {run.status === 'done' && settings.showStats && run.stats && <StatsLine stats={run.stats} />}
-
-      {running && <ProgressBar run={run} />}
+      {settings.showStats && stats && <StatsLine stats={stats} />}
 
       <BottomSheet open={selection !== null} onClose={() => setSelection(null)}>
-        {selection && <WordSheet selection={selection} recordId={null} />}
+        {selection && <WordSheet selection={selection} recordId={recordId} />}
       </BottomSheet>
+    </main>
+  )
+}
+
+function Empty({ text }: { text: string }) {
+  return (
+    <main className="page stack">
+      <h1>분석 결과</h1>
+      <p className="dim">{text}</p>
+      <Link to="/">홈으로</Link>
     </main>
   )
 }
@@ -184,7 +311,7 @@ function ErrorBox({ run, onRecrop }: { run: RunState; onRecrop?: () => void }) {
   )
 }
 
-function StatsLine({ stats }: { stats: NonNullable<RunState['stats']> }) {
+function StatsLine({ stats }: { stats: Stats }) {
   const parts = [`분석 ${stats.seconds}초`]
   if (stats.firstSentenceSeconds !== null) parts.push(`첫 문장 ${stats.firstSentenceSeconds}초`)
   if (stats.outputTokens !== undefined) parts.push(`출력 ${stats.outputTokens.toLocaleString()}토큰`)

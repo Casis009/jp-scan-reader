@@ -15,7 +15,8 @@ async function dataUrlToBlob(url: string): Promise<Blob> {
   return (await fetch(url)).blob()
 }
 
-type SerializedRecord = Omit<AnalysisRecord, 'image' | 'thumbnail'> & { image: string; thumbnail: string }
+// 원본 이미지 Blob은 data URL로 바꿔 넣는다. 썸네일은 이미 data URL 문자열이다.
+type SerializedRecord = Omit<AnalysisRecord, 'image'> & { image: string }
 
 /**
  * 전체 데이터를 JSON 문자열로 만든다. includeApiKey가 false면 API 키는 빼고 내보낸다.
@@ -26,7 +27,6 @@ export async function exportBackup(includeApiKey: boolean): Promise<string> {
     (await db.records.toArray()).map(async (r) => ({
       ...r,
       image: await blobToDataUrl(r.image),
-      thumbnail: await blobToDataUrl(r.thumbnail),
     })),
   )
   const vocab = await db.vocab.toArray()
@@ -41,7 +41,6 @@ export async function importBackup(json: string): Promise<{ records: number; voc
     (data.records as SerializedRecord[]).map(async (r) => ({
       ...r,
       image: await dataUrlToBlob(r.image),
-      thumbnail: await dataUrlToBlob(r.thumbnail),
     })),
   )
   await db.transaction('rw', db.settings, db.records, db.vocab, async () => {

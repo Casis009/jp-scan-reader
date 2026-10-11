@@ -62,3 +62,13 @@ export async function sha256Hex(blob: Blob): Promise<string> {
   const digest = await crypto.subtle.digest('SHA-256', await blob.arrayBuffer())
   return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, '0')).join('')
 }
+
+/** 목록용 썸네일. 긴 변 240px JPEG data URL. */
+export async function makeThumbnail(blob: Blob, maxSide = 240): Promise<string> {
+  const bitmap = await createImageBitmap(blob)
+  const scale = Math.min(1, maxSide / Math.max(bitmap.width, bitmap.height))
+  const [c, ctx] = canvas(Math.max(1, Math.round(bitmap.width * scale)), Math.max(1, Math.round(bitmap.height * scale)))
+  ctx.drawImage(bitmap, 0, 0, c.width, c.height)
+  bitmap.close()
+  return c.toDataURL('image/jpeg', 0.7)
+}

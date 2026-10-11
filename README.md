@@ -1,32 +1,111 @@
-# React + TypeScript + Vite
+# 원서스캔 — 일본어 원서 스캔 학습 앱
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+일본어 책 페이지를 찍으면 Gemini가 본문을 읽고 분석해 주는 개인용 학습 웹앱(PWA)입니다.
+세로쓰기 소설과 JLPT 교재의 가로쓰기를 모두 지원합니다.
 
-Currently, two official plugins are available:
+- 한자 위 후리가나(전체 / 내 수준 이상 / 숨김)
+- 단어를 누르면 사전형·읽기·품사·활용형·뜻·JLPT 레벨, 단어장 추가
+- 문장별 문법 설명과 한국어 번역(먼저 스스로 해석해 보도록 접혀 있음)
+- 판독이 불확실한 글자(〓)와 페이지에서 잘린 문장 강조
+- 분석 기록 저장, 같은 사진은 다시 분석하지 않고 저장된 결과 사용
+- 단어장(레벨 필터·검색)과 Anki용 CSV 내보내기
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+비용은 0원입니다. 서버 없이 브라우저가 Gemini API 무료 티어를 직접 호출하고, 앱은 GitHub Pages에 무료로 올라갑니다.
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 1. 휴대폰에 설치하기 (갤럭시 · Chrome 기준)
 
-## Expanding the Oxlint configuration
+1. 휴대폰 **Chrome**에서 앱 주소를 엽니다.
+   `https://casis009.github.io/jp-scan-reader/`
+2. 오른쪽 위 **⋮(메뉴)** → **홈 화면에 추가** 또는 **앱 설치**를 누릅니다.
+3. **설치**를 누르면 홈 화면에 「원서스캔」 아이콘이 생깁니다.
+4. 아이콘으로 열면 주소창 없이 앱처럼 세로 화면으로 실행됩니다.
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+> 처음 한 번 연 뒤에는 앱 화면(셸)이 기기에 저장되어 인터넷이 약해도 빨리 열립니다.
+> 분석 자체는 Gemini API를 쓰므로 인터넷이 필요합니다.
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+앱이 새 버전으로 배포되면 다음에 열 때 자동으로 갱신됩니다. 바로 반영되지 않으면 앱을 완전히 닫았다가 다시 여세요.
+
+## 2. Gemini API 키 발급하기 (무료)
+
+1. PC나 휴대폰 브라우저에서 **Google AI Studio**의 API 키 페이지를 엽니다.
+   <https://aistudio.google.com/apikey>
+2. Google 계정으로 로그인하고, 처음이면 서비스 약관에 동의합니다.
+   처음 쓰는 계정이면 Google Cloud 프로젝트와 키가 자동으로 만들어집니다.
+3. **Create API key(API 키 만들기)** 를 누르고, 만들어진 키(`AIza…`로 시작)를 복사합니다.
+4. (권장) 키 목록에서 **Unrestricted** 표시가 있는 키의 **Add restrictions** →
+   **Restrict to Gemini API only** → **Restrict key**를 눌러 Gemini API에만 쓰이게 제한합니다.
+5. 앱의 **설정 → Gemini API 키**에 붙여 넣고 **키 저장**을 누릅니다.
+   **연결 확인**을 누르면 사용 한도를 쓰지 않고 키와 모델 이름이 맞는지 확인할 수 있습니다.
+
+### 알아 둘 점
+
+- **키는 이 기기의 브라우저 저장소(IndexedDB)에만 저장됩니다.** 코드나 저장소, 배포된 사이트에는 들어가지 않습니다.
+  대신 키가 브라우저에서 바로 쓰이므로, 이 앱은 본인 기기에서 혼자 쓰는 용도로만 사용하세요.
+  키가 노출된 것 같으면 AI Studio에서 새 키를 만들고 예전 키를 삭제하세요.
+- **무료 티어에서는 보낸 사진과 결과가 Google의 모델 개선에 쓰일 수 있고, 사람이 검토할 수도 있습니다.**
+  개인정보나 민감한 내용이 담긴 페이지는 찍지 마세요.
+- 무료 티어 이용 약관상 만 18세 이상만 쓸 수 있습니다.
+- 비용을 0원으로 유지하려면 Google Cloud 프로젝트에 결제 계정을 연결하지 마세요.
+- 무료 한도를 넘으면 "무료 한도 초과" 안내가 나옵니다. 잠시 뒤 다시 시도하세요.
+  Google 서버가 혼잡하면(503) **다른 모델로 분석** 버튼으로 다른 무료 모델을 써 볼 수 있습니다.
+
+## 3. 사용법
+
+1. 홈 또는 아래 가운데 **◉** 버튼으로 책 페이지를 찍거나 갤러리에서 고릅니다.
+2. 한 페이지만 들어가도록 테두리를 맞추고, 필요하면 ⟲ ⟳로 90도 회전한 뒤 **분석**을 누릅니다.
+3. 분석이 진행되는 동안 문장이 하나씩 화면에 나타납니다. 페이지 하나에 보통 수십 초 걸립니다.
+4. 단어를 누르면 아래에서 설명이 올라오고, **단어장 추가**로 저장할 수 있습니다.
+5. 단어장 화면에서 **Anki용 CSV 내보내기**로 Anki에 가져갈 파일을 만들 수 있습니다.
+   (Anki 2.1.55 이상 · 앞면: 단어, 뒷면: 읽기 / 뜻 / 예문)
+
+설정에서 학습자 수준(N5~N1), 후리가나 표시 방식, 모델, 생각 수준을 바꿀 수 있습니다.
+API 키 없이 화면을 둘러보려면 **데모 모드**를 켜세요. 예시 결과로 동작합니다.
+
+## 4. 백업과 복원
+
+분석 기록과 단어장은 그 기기의 브라우저에만 저장됩니다.
+**Chrome의 사이트 데이터를 지우거나 앱을 삭제하면 함께 사라지니** 가끔 백업해 두세요.
+
+**백업**
+1. **설정 → 데이터 백업 · 복원 → JSON으로 내보내기**를 누릅니다.
+2. `jp-scan-reader-날짜.json` 파일이 다운로드 폴더에 저장됩니다.
+   (기록의 사진이 들어 있어 파일이 클 수 있습니다.)
+3. 기본으로 API 키는 백업에 넣지 않습니다. 새 기기로 옮길 때 키도 함께 옮기려면
+   **백업에 API 키 포함**을 켠 뒤 내보내고, 그 파일은 남에게 주지 마세요.
+
+**복원**
+1. **설정 → JSON에서 복원**을 누르고 백업 파일을 고릅니다.
+2. 안내를 확인하고 **복원 실행**을 누릅니다. **현재 기록과 단어장은 모두 지워지고** 백업 내용으로 바뀝니다.
+   백업에 API 키가 없으면 이 기기에 저장된 키는 그대로 둡니다.
+
+---
+
+## 개발
+
+```bash
+npm install
+npm run dev      # 개발 서버
+npm test         # 테스트(vitest)
+npm run build    # 배포용 빌드(dist/)
+npm run lint     # oxlint
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+- Vite + React + TypeScript, vite-plugin-pwa, Dexie(IndexedDB), zod, @google/genai
+- 분석 프롬프트와 출력 형식의 원본은 [`docs/analysis-prompt.md`](docs/analysis-prompt.md)입니다.
+  `src/prompts/analysis.ts`는 이 문서를 그대로 옮긴 것이고, 둘이 다르면 테스트가 실패합니다.
+- `tests/fixtures/`의 예시 결과는 직접 쓴 짧은 문장입니다.
+  실제 책 분석 결과는 저작권 때문에 `tests/fixtures/real/`에 두며, 이 폴더는 커밋되지 않습니다(개발 서버의 데모 목록에만 나타남).
+- 개발 서버를 휴대폰에서 `http://192.168…` 주소로 열면 분석이 동작하지 않습니다(이미지 해시 계산에 https가 필요). 배포된 주소나 PC의 `localhost`에서 확인하세요.
+
+## 배포 (GitHub Pages)
+
+`main` 브랜치에 푸시하면 GitHub Actions(`.github/workflows/deploy.yml`)가 테스트·빌드 후 Pages에 배포합니다.
+처음 한 번 저장소 설정이 필요합니다.
+
+1. GitHub에서 저장소 → **Settings** → 왼쪽 **Pages**
+2. **Build and deployment → Source**를 **GitHub Actions**로 선택
+3. **Actions** 탭에서 실패한 배포가 있으면 **Re-run all jobs**로 다시 실행
+
+배포 주소: `https://casis009.github.io/jp-scan-reader/`

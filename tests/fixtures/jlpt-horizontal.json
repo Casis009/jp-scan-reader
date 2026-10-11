@@ -1,0 +1,132 @@
+{
+  "layout": { "direction": "horizontal", "confidence": 0.99 },
+  "pageNote": null,
+  "sentences": [
+    {
+      "id": 1,
+      "kind": "heading",
+      "text": "問題1",
+      "translation": "문제 1",
+      "incomplete": false,
+      "tokens": [
+        { "surface": "問題", "ruby": [{ "base": "問", "rt": "もん" }, { "base": "題", "rt": "だい" }], "lemma": "問題", "lemmaReading": "もんだい", "pos": "명사", "conjugation": null, "meaning": "문제", "jlpt": "N5", "rubyInSource": false },
+        { "surface": "1", "ruby": [{ "base": "1", "rt": "" }], "lemma": null, "lemmaReading": null, "pos": null, "conjugation": null, "meaning": null, "jlpt": null, "rubyInSource": false }
+      ],
+      "grammar": [],
+      "uncertain": [],
+      "uncertainNote": null
+    },
+    {
+      "id": 2,
+      "kind": "question",
+      "text": "（　　）に入るものを一つえらびなさい。",
+      "translation": "（　　）에 들어갈 것을 하나 고르시오.",
+      "incomplete": false,
+      "tokens": [
+        { "surface": "（", "ruby": [{ "base": "（", "rt": "" }], "lemma": null, "lemmaReading": null, "pos": null, "conjugation": null, "meaning": null, "jlpt": null, "rubyInSource": false },
+        { "surface": "　　", "ruby": [{ "base": "　　", "rt": "" }], "lemma": null, "lemmaReading": null, "pos": null, "conjugation": null, "meaning": null, "jlpt": null, "rubyInSource": false },
+        { "surface": "）", "ruby": [{ "base": "）", "rt": "" }], "lemma": null, "lemmaReading": null, "pos": null, "conjugation": null, "meaning": null, "jlpt": null, "rubyInSource": false },
+        { "surface": "に", "ruby": [{ "base": "に", "rt": "" }], "lemma": "に", "lemmaReading": "に", "pos": "조사", "conjugation": null, "meaning": "~에", "jlpt": "N5", "rubyInSource": false },
+        { "surface": "入る", "ruby": [{ "base": "入", "rt": "はい" }, { "base": "る", "rt": "" }], "lemma": "入る", "lemmaReading": "はいる", "pos": "동사(5단)", "conjugation": null, "meaning": "들어가다", "jlpt": "N5", "rubyInSource": false },
+        { "surface": "もの", "ruby": [{ "base": "もの", "rt": "" }], "lemma": "もの", "lemmaReading": "もの", "pos": "명사", "conjugation": null, "meaning": "것", "jlpt": "N5", "rubyInSource": false },
+        { "surface": "を", "ruby": [{ "base": "を", "rt": "" }], "lemma": "を", "lemmaReading": "を", "pos": "조사", "conjugation": null, "meaning": "~을/를", "jlpt": "N5", "rubyInSource": false },
+        { "surface": "一つ", "ruby": [{ "base": "一", "rt": "ひと" }, { "base": "つ", "rt": "" }], "lemma": "一つ", "lemmaReading": "ひとつ", "pos": "명사", "conjugation": null, "meaning": "하나", "jlpt": "N5", "rubyInSource": false },
+        { "surface": "えらびなさい", "ruby": [{ "base": "えらびなさい", "rt": "" }], "lemma": "選ぶ", "lemmaReading": "えらぶ", "pos": "동사(5단)", "conjugation": "なさい형(명령)", "meaning": "고르다", "jlpt": "N4", "rubyInSource": false },
+        { "surface": "。", "ruby": [{ "base": "。", "rt": "" }], "lemma": null, "lemmaReading": null, "pos": null, "conjugation": null, "meaning": null, "jlpt": null, "rubyInSource": false }
+      ],
+      "grammar": [
+        { "pattern": "〜なさい", "level": "N4", "explanation": "윗사람이 아랫사람에게 하는 부드러운 명령. 시험 지시문에 자주 쓰인다.", "usage": "えらぶ의 ます형 えらび에 붙어 '고르시오'라는 지시가 된다." }
+      ],
+      "uncertain": [],
+      "uncertainNote": null
+    },
+    {
+      "id": 3,
+      "kind": "question",
+      "text": "この機械は今日中に修理（　　）ことになっている。",
+      "translation": "이 기계는 오늘 중에 수리（　　）기로 되어 있다.",
+      "incomplete": false,
+      "tokens": [
+        { "surface": "この", "ruby": [{ "base": "この", "rt": "" }], "lemma": "この", "lemmaReading": "この", "pos": "연체사", "conjugation": null, "meaning": "이", "jlpt": "N5", "rubyInSource": false },
+        { "surface": "機械", "ruby": [{ "base": "機", "rt": "き" }, { "base": "械", "rt": "かい" }], "lemma": "機械", "lemmaReading": "きかい", "pos": "명사", "conjugation": null, "meaning": "기계", "jlpt": "N4", "rubyInSource": false },
+        { "surface": "は", "ruby": [{ "base": "は", "rt": "" }], "lemma": "は", "lemmaReading": "は", "pos": "조사", "conjugation": null, "meaning": "~은/는", "jlpt": "N5", "rubyInSource": false },
+        { "surface": "今日中", "ruby": [{ "base": "今日", "rt": "きょう" }, { "base": "中", "rt": "じゅう" }], "lemma": "今日中", "lemmaReading": "きょうじゅう", "pos": "명사", "conjugation": null, "meaning": "오늘 중", "jlpt": "N3", "rubyInSource": false },
+        { "surface": "に", "ruby": [{ "base": "に", "rt": "" }], "lemma": "に", "lemmaReading": "に", "pos": "조사", "conjugation": null, "meaning": "~에", "jlpt": "N5", "rubyInSource": false },
+        { "surface": "修理", "ruby": [{ "base": "修", "rt": "しゅう" }, { "base": "理", "rt": "り" }], "lemma": "修理", "lemmaReading": "しゅうり", "pos": "명사", "conjugation": null, "meaning": "수리", "jlpt": "N3", "rubyInSource": false },
+        { "surface": "（", "ruby": [{ "base": "（", "rt": "" }], "lemma": null, "lemmaReading": null, "pos": null, "conjugation": null, "meaning": null, "jlpt": null, "rubyInSource": false },
+        { "surface": "　　", "ruby": [{ "base": "　　", "rt": "" }], "lemma": null, "lemmaReading": null, "pos": null, "conjugation": null, "meaning": null, "jlpt": null, "rubyInSource": false },
+        { "surface": "）", "ruby": [{ "base": "）", "rt": "" }], "lemma": null, "lemmaReading": null, "pos": null, "conjugation": null, "meaning": null, "jlpt": null, "rubyInSource": false },
+        { "surface": "こと", "ruby": [{ "base": "こと", "rt": "" }], "lemma": "こと", "lemmaReading": "こと", "pos": "명사", "conjugation": null, "meaning": "것, 일", "jlpt": "N5", "rubyInSource": false },
+        { "surface": "に", "ruby": [{ "base": "に", "rt": "" }], "lemma": "に", "lemmaReading": "に", "pos": "조사", "conjugation": null, "meaning": "~로", "jlpt": "N5", "rubyInSource": false },
+        { "surface": "なっている", "ruby": [{ "base": "なっている", "rt": "" }], "lemma": "なる", "lemmaReading": "なる", "pos": "동사(5단)", "conjugation": "て형+いる", "meaning": "되다", "jlpt": "N5", "rubyInSource": false },
+        { "surface": "。", "ruby": [{ "base": "。", "rt": "" }], "lemma": null, "lemmaReading": null, "pos": null, "conjugation": null, "meaning": null, "jlpt": null, "rubyInSource": false }
+      ],
+      "grammar": [
+        { "pattern": "〜ことになっている", "level": "N3", "explanation": "규칙·예정·약속으로 그렇게 정해져 있음을 나타낸다.", "usage": "기계를 오늘 중에 수리하기로 이미 정해져 있다는 뜻이다." },
+        { "pattern": "명사+される（する동사 수동）", "level": "N4", "explanation": "する동사의 수동형은 명사 뒤에 される를 붙여 만든다.", "usage": "주어가 機械이므로 빈칸에는 수동형 される가 들어가 '수리되다'가 된다." }
+      ],
+      "uncertain": [],
+      "uncertainNote": null
+    },
+    {
+      "id": 4,
+      "kind": "choice",
+      "text": "1　させる",
+      "translation": null,
+      "incomplete": false,
+      "tokens": [
+        { "surface": "1", "ruby": [{ "base": "1", "rt": "" }], "lemma": null, "lemmaReading": null, "pos": null, "conjugation": null, "meaning": null, "jlpt": null, "rubyInSource": false },
+        { "surface": "　", "ruby": [{ "base": "　", "rt": "" }], "lemma": null, "lemmaReading": null, "pos": null, "conjugation": null, "meaning": null, "jlpt": null, "rubyInSource": false },
+        { "surface": "させる", "ruby": [{ "base": "させる", "rt": "" }], "lemma": "する", "lemmaReading": "する", "pos": "동사(する)", "conjugation": "사역", "meaning": "시키다", "jlpt": "N4", "rubyInSource": false }
+      ],
+      "grammar": [],
+      "uncertain": [],
+      "uncertainNote": null
+    },
+    {
+      "id": 5,
+      "kind": "choice",
+      "text": "2　される",
+      "translation": null,
+      "incomplete": false,
+      "tokens": [
+        { "surface": "2", "ruby": [{ "base": "2", "rt": "" }], "lemma": null, "lemmaReading": null, "pos": null, "conjugation": null, "meaning": null, "jlpt": null, "rubyInSource": false },
+        { "surface": "　", "ruby": [{ "base": "　", "rt": "" }], "lemma": null, "lemmaReading": null, "pos": null, "conjugation": null, "meaning": null, "jlpt": null, "rubyInSource": false },
+        { "surface": "される", "ruby": [{ "base": "される", "rt": "" }], "lemma": "する", "lemmaReading": "する", "pos": "동사(する)", "conjugation": "수동", "meaning": "되다 (수동)", "jlpt": "N4", "rubyInSource": false }
+      ],
+      "grammar": [],
+      "uncertain": [],
+      "uncertainNote": null
+    },
+    {
+      "id": 6,
+      "kind": "choice",
+      "text": "3　する",
+      "translation": null,
+      "incomplete": false,
+      "tokens": [
+        { "surface": "3", "ruby": [{ "base": "3", "rt": "" }], "lemma": null, "lemmaReading": null, "pos": null, "conjugation": null, "meaning": null, "jlpt": null, "rubyInSource": false },
+        { "surface": "　", "ruby": [{ "base": "　", "rt": "" }], "lemma": null, "lemmaReading": null, "pos": null, "conjugation": null, "meaning": null, "jlpt": null, "rubyInSource": false },
+        { "surface": "する", "ruby": [{ "base": "する", "rt": "" }], "lemma": "する", "lemmaReading": "する", "pos": "동사(する)", "conjugation": null, "meaning": "하다", "jlpt": "N5", "rubyInSource": false }
+      ],
+      "grammar": [],
+      "uncertain": [],
+      "uncertainNote": null
+    },
+    {
+      "id": 7,
+      "kind": "choice",
+      "text": "4　した",
+      "translation": null,
+      "incomplete": false,
+      "tokens": [
+        { "surface": "4", "ruby": [{ "base": "4", "rt": "" }], "lemma": null, "lemmaReading": null, "pos": null, "conjugation": null, "meaning": null, "jlpt": null, "rubyInSource": false },
+        { "surface": "　", "ruby": [{ "base": "　", "rt": "" }], "lemma": null, "lemmaReading": null, "pos": null, "conjugation": null, "meaning": null, "jlpt": null, "rubyInSource": false },
+        { "surface": "した", "ruby": [{ "base": "した", "rt": "" }], "lemma": "する", "lemmaReading": "する", "pos": "동사(する)", "conjugation": "과거", "meaning": "했다", "jlpt": "N5", "rubyInSource": false }
+      ],
+      "grammar": [],
+      "uncertain": [],
+      "uncertainNote": null
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+
+node_modules
+dist
+dist-ssr
+dev-dist
+*.local
+
+# 비밀값: API 키는 기기 IndexedDB에만 저장한다. 키 파일이 커밋되지 않도록 막는다.
+.env
+.env.*
+!.env.example
+*.key
+*apikey*
+*api-key*
+*api_key*
+secrets.*
+backup-*.json
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+
+# 실제 책 분석 결과는 저작권 때문에 커밋하지 않는다
+tests/fixtures/real/

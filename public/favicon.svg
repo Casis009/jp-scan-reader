@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#16161a"/>
+  <text x="256" y="350" font-family="'Noto Serif JP','Yu Mincho','Hiragino Mincho ProN',serif" font-size="300" font-weight="700" fill="#f5f0e6" text-anchor="middle">読</text>
+  <rect x="96" y="410" width="320" height="20" rx="10" fill="#e0a84a"/>
+</svg>

@@ -59,10 +59,16 @@
 - 각 문장을 학습자가 사전에서 찾을 단위로 나눈다. 한자가 없는 단어(조사, 가타카나어 등)도 토큰에 포함한다. 앱에서 문장 전체를 단어 단위로 탭할 수 있게 하기 위함이다.
 - 모든 토큰의 `surface`를 이어 붙이면 문장의 `text`와 한 글자도 다르지 않아야 한다.
 - 활용 어미와 조동사는 앞 단어에 붙인다(例: 食べられなかった → 한 토큰). 조사는 따로 나눈다.
-- 문장부호·기호·공백·〓는 각각 별도 토큰으로 두고 `lemma`, `lemmaReading`, `pos`, `conjugation`, `meaning`, `jlpt`를 모두 null로 한다.
+- 문장부호·기호·공백·〓는 각각 별도 토큰으로 두고 `surface`만 쓴다. 다른 필드는 모두 생략한다.
+
+### 3-1. 생략 규칙 (출력을 짧게 하기 위함)
+- 한자가 없는 토큰은 `ruby`를 생략한다.
+- `lemma`가 `surface`와 같으면 `lemma`와 `lemmaReading`을 생략한다.
+- `conjugation`과 `jlpt`는 값이 없으면 null 대신 생략한다.
+- `rubyInSource`는 true일 때만 넣는다.
 
 ### 4. 후리가나 (`ruby`)
-- `ruby`는 토큰의 `surface`를 순서대로 덮는 조각 배열이다. 조각의 `base`를 이어 붙이면 `surface`와 같아야 한다.
+- `ruby`는 한자가 있는 토큰의 `surface`를 순서대로 덮는 조각 배열이다. 조각의 `base`를 이어 붙이면 `surface`와 같아야 한다.
 - 한자가 포함된 모든 단어에 히라가나 읽기를 붙인다. 읽기는 문맥에 맞게 정한다(例: 今日=きょう, 一人=ひとり, 上手=じょうず).
 - 후리가나는 한자 부분에만 붙이고, 오쿠리가나는 분리한다. 가나·기호만 있는 조각은 `rt`를 빈 문자열로 둔다.
   - 食べる → [{"base":"食","rt":"た"},{"base":"べる","rt":""}]
@@ -71,7 +77,6 @@
   - 今日 → [{"base":"今日","rt":"きょう"}]
 - 숫자+조수사 토큰(1杯, 3回 등)은 `surface` 전체에 루비 하나를 붙인다.
   - 1杯 → [{"base":"1杯","rt":"いっぱい"}]
-- 한자가 없는 토큰은 [{"base": surface, "rt": ""}] 한 조각으로 둔다.
 - `rt`에는 히라가나·가타카나·장음 부호(ー)만 쓴다. 한국어, 로마자, 한자, 기호를 넣지 않는다.
 
 ### 5. 단어 정보
@@ -81,9 +86,9 @@
 - `lemmaReading`에는 히라가나·가타카나·장음 부호(ー)만 쓴다. 한국어, 로마자, 한자, 기호를 넣지 않는다.
 - `pos`: 품사를 한국어로. 동사는 활용 종류를 괄호에 붙인다.
   例: "동사(5단)", "동사(1단)", "동사(する)", "동사(くる)", "い형용사", "な형용사", "명사", "대명사", "부사", "조사", "접속사", "조동사", "연체사", "감동사", "고유명사"
-- `conjugation`: 동사·형용사가 이 문장에서 활용된 형태를 한국어로 짧게 적는다. 例: "て형", "과거 부정", "수동+과거". 사전형 그대로이거나 활용하지 않는 품사면 null.
+- `conjugation`: 동사·형용사가 이 문장에서 활용된 형태를 한국어로 짧게 적는다. 例: "て형", "과거 부정", "수동+과거". 사전형 그대로이거나 활용하지 않는 품사면 생략한다.
 - `meaning`: 이 문맥에서의 뜻을 한국어로 짧게(2~8자 정도). 사전처럼 여러 뜻을 나열하지 않는다.
-- `jlpt`: 이 단어의 JLPT 레벨("N5"~"N1") 추정치. 고유명사, 레벨 목록에 없는 어휘, 판단이 어려우면 null.
+- `jlpt`: 이 단어의 JLPT 레벨("N5"~"N1") 추정치. 고유명사, 레벨 목록에 없는 어휘, 판단이 어려우면 생략한다.
 
 ### 6. 문법 (`grammar`)
 - 학습 가치가 있는 항목만 고른다. 한 문장당 최대 3개까지다.
@@ -132,18 +137,9 @@
       "translation": "그는 매일 아침 커피를 마시고 있다.",   // choice면 null
       "incomplete": false,
       "tokens": [
-        {
-          "surface": "彼",
-          "ruby": [{ "base": "彼", "rt": "かれ" }],
-          "lemma": "彼",
-          "lemmaReading": "かれ",
-          "pos": "대명사",
-          "conjugation": null,
-          "meaning": "그",
-          "jlpt": "N5",
-          "rubyInSource": false
-        },
-        // … は / 毎朝 / コーヒー / を …
+        { "surface": "彼", "ruby": [{ "base": "彼", "rt": "かれ" }], "pos": "대명사", "meaning": "그", "jlpt": "N5" },
+        { "surface": "は", "pos": "조사", "meaning": "~은/는", "jlpt": "N5" },
+        // … 毎朝 / コーヒー / を …
         {
           "surface": "飲んでいる",
           "ruby": [{ "base": "飲", "rt": "の" }, { "base": "んでいる", "rt": "" }],
@@ -152,20 +148,9 @@
           "pos": "동사(5단)",
           "conjugation": "て형+いる",
           "meaning": "마시다",
-          "jlpt": "N5",
-          "rubyInSource": false
+          "jlpt": "N5"
         },
-        {
-          "surface": "。",
-          "ruby": [{ "base": "。", "rt": "" }],
-          "lemma": null,
-          "lemmaReading": null,
-          "pos": null,
-          "conjugation": null,
-          "meaning": null,
-          "jlpt": null,
-          "rubyInSource": false
-        }
+        { "surface": "。" }
       ],
       "grammar": [
         {
@@ -196,11 +181,12 @@
 | sentences[].incomplete | boolean | 페이지 경계에서 잘린 문장 |
 | sentences[].uncertain[] | { index: integer, candidates: string[] } | 문장 안에서 몇 번째 〓인지(0부터)와 후보 |
 | sentences[].uncertainNote | string \| null | 판독 불가 사유(보조 설명) |
-| tokens[].surface | string | |
-| tokens[].ruby[] | { base: string, rt: string } | base 를 이은 값 = surface, rt 는 히라가나 또는 "" |
-| tokens[].lemma, lemmaReading, pos, meaning | string \| null | 문장부호·기호·〓 는 null |
-| tokens[].conjugation | string \| null | 사전형·비활용 품사는 null |
-| tokens[].jlpt | "N5"…"N1" \| null | 추정치 |
-| tokens[].rubyInSource | boolean | 원문에 루비가 인쇄돼 있던 토큰 |
+| tokens[].surface | string | 필수. 문장부호·기호·공백·〓 토큰은 이것만 쓴다 |
+| tokens[].ruby[] | { base: string, rt: string } | 생략 가능(한자 없는 토큰). base 를 이은 값 = surface, rt 는 가나 또는 "" |
+| tokens[].lemma, lemmaReading | string | 생략 가능(lemma = surface 일 때) |
+| tokens[].pos, meaning | string | 단어 토큰에는 반드시 넣는다 |
+| tokens[].conjugation | string | 생략 가능(사전형·비활용 품사) |
+| tokens[].jlpt | "N5"…"N1" | 생략 가능(등급 외·판단 불가) |
+| tokens[].rubyInSource | boolean | true 일 때만 넣는다 |
 | grammar[] | { pattern, level, explanation, usage } | 최대 3개, choice 는 빈 배열 |
 | grammar[].level | "N5"…"N1" \| null | 추정치 |

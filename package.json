@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@google/genai": "^2.28.0",
+    "@streamparser/json": "^0.0.26",
     "dexie": "^4.4.6",
     "dexie-react-hooks": "^4.4.0",
     "react": "^19.2.8",

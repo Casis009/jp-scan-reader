@@ -2,17 +2,16 @@ import { useNavigate } from 'react-router-dom'
 import { ScanPicker } from '../components/ScanPicker'
 import { useSettings } from '../lib/settings'
 import { DEMO_FIXTURES, type DemoFixture } from '../lib/demo'
-import { analyzeDemo } from '../lib/gemini'
-import { setLatestResult } from '../lib/session'
+import { startRun } from '../lib/run'
 
 export default function HomePage() {
   const settings = useSettings()
   const navigate = useNavigate()
 
   // 데모 모드에서는 사진 없이 예시 결과를 바로 열 수 있다.
-  const openDemo = async (f: DemoFixture) => {
-    const result = await analyzeDemo(await f.load())
-    setLatestResult({ ...result, image: null, source: `데모: ${f.label}` })
+  const openDemo = (f: DemoFixture) => {
+    if (!settings) return
+    startRun({ image: null, settings, demo: f })
     navigate('/result/latest')
   }
 

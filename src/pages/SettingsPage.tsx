@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { DEFAULT_MODEL, type FuriganaMode, type JlptLevel, type Settings, type ThinkingLevel } from '../lib/db'
 import { saveSetting, useSettings } from '../lib/settings'
 import { downloadText, exportBackup, importBackup } from '../lib/backup'
+import { effectiveThinkingLevel, MODEL_PRESETS, thinkingLevelsFor } from '../lib/models'
 
 const LEVELS: JlptLevel[] = ['N5', 'N4', 'N3', 'N2', 'N1']
 const FURIGANA_MODES: { value: FuriganaMode; label: string }[] = [
@@ -9,11 +10,8 @@ const FURIGANA_MODES: { value: FuriganaMode; label: string }[] = [
   { value: 'level', label: '내 수준 이상' },
   { value: 'none', label: '숨김' },
 ]
-const THINKING_LEVELS: { value: ThinkingLevel; label: string }[] = [
-  { value: 'LOW', label: '낮음' },
-  { value: 'MEDIUM', label: '보통' },
-  { value: 'HIGH', label: '높음' },
-]
+const THINKING_LABEL: Record<ThinkingLevel, string> = { MINIMAL: '최소', LOW: '낮음', MEDIUM: '보통', HIGH: '높음' }
+const CUSTOM = '__custom__'
 
 export default function SettingsPage() {
   const settings = useSettings()
@@ -39,6 +37,9 @@ interface FormProps {
 function SettingsForm({ settings, initialMessage, onRestored }: FormProps) {
   const [keyDraft, setKeyDraft] = useState(settings.apiKey)
   const [modelDraft, setModelDraft] = useState(settings.model)
+  const [customModel, setCustomModel] = useState(() => !MODEL_PRESETS.some((m) => m.id === settings.model))
+  const thinkingLevels = thinkingLevelsFor(settings.model)
+  const effectiveThinking = effectiveThinkingLevel(settings.model, settings.thinkingLevel)
   const [showKey, setShowKey] = useState(false)
   const [status, setStatus] = useState<{ kind: 'ok' | 'error'; text: string } | null>(
     initialMessage ? { kind: 'ok', text: initialMessage } : null,
@@ -141,33 +142,54 @@ function SettingsForm({ settings, initialMessage, onRestored }: FormProps) {
 
       <section className="card stack">
         <div className="field">
-          <label htmlFor="model">모델 이름</label>
-          <input
+          <label htmlFor="model">모델</label>
+          <select
             id="model"
-            spellCheck={false}
-            autoCapitalize="off"
-            value={modelDraft}
-            onChange={(e) => setModelDraft(e.target.value)}
-            onBlur={() => modelDirty && saveModel(modelDraft)}
-          />
-          <span className="dim small">기본값 {DEFAULT_MODEL}. 무료 티어에서 쓸 수 있는 Flash 계열 모델을 입력하세요.</span>
+            value={customModel ? CUSTOM : settings.model}
+            onChange={(e) => {
+              if (e.target.value === CUSTOM) setCustomModel(true)
+              else {
+                setCustomModel(false)
+                saveModel(e.target.value)
+              }
+            }}
+          >
+            {MODEL_PRESETS.map((m) => (
+              <option key={m.id} value={m.id}>
+                {m.label}
+                {m.id === DEFAULT_MODEL ? ' (기본)' : ''}
+              </option>
+            ))}
+            <option value={CUSTOM}>직접 입력…</option>
+          </select>
+          {customModel && (
+            <input
+              aria-label="모델 이름 직접 입력"
+              spellCheck={false}
+              autoCapitalize="off"
+              placeholder="gemini-…"
+              value={modelDraft}
+              onChange={(e) => setModelDraft(e.target.value)}
+              onBlur={() => modelDirty && saveModel(modelDraft)}
+            />
+          )}
+          <span className="dim small">목록은 2026-10-12 공식 문서 기준 무료 티어 모델입니다. 현재: {settings.model}</span>
         </div>
         <div className="field">
           <span className="label">생각 수준</span>
           <div className="segmented" role="group">
-            {THINKING_LEVELS.map((t) => (
-              <button key={t.value} aria-pressed={settings.thinkingLevel === t.value} onClick={() => saveSetting('thinkingLevel', t.value)}>
-                {t.label}
+            {thinkingLevels.map((t) => (
+              <button key={t} aria-pressed={effectiveThinking === t} onClick={() => saveSetting('thinkingLevel', t)}>
+                {THINKING_LABEL[t]}
               </button>
             ))}
           </div>
-          <span className="dim small">높을수록 판독·분석이 꼼꼼해지지만 느려지고 출력 한도를 더 씁니다.</span>
+          <span className="dim small">높을수록 판독·분석이 꼼꼼해지지만 느려지고 출력 한도를 더 씁니다. 모델마다 고를 수 있는 수준이 다릅니다.</span>
         </div>
-        {settings.model !== DEFAULT_MODEL && (
-          <button className="btn" onClick={() => saveModel(DEFAULT_MODEL)}>
-            기본값으로 되돌리기
-          </button>
-        )}
+        <label className="switch">
+          <span className="small">결과 화면에 소요 시간·토큰 수 표시</span>
+          <input type="checkbox" checked={settings.showStats} onChange={(e) => saveSetting('showStats', e.target.checked)} />
+        </label>
       </section>
 
       <section className="card stack">

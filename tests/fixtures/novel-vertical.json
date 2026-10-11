@@ -9,10 +9,10 @@
       "translation": "3. 오래된 편지",
       "incomplete": false,
       "tokens": [
-        { "surface": "三", "ruby": [{ "base": "三", "rt": "さん" }], "lemma": "三", "lemmaReading": "さん", "pos": "명사", "conjugation": null, "meaning": "셋, 3", "jlpt": "N5", "rubyInSource": false },
-        { "surface": "　", "ruby": [{ "base": "　", "rt": "" }], "lemma": null, "lemmaReading": null, "pos": null, "conjugation": null, "meaning": null, "jlpt": null, "rubyInSource": false },
-        { "surface": "古い", "ruby": [{ "base": "古", "rt": "ふる" }, { "base": "い", "rt": "" }], "lemma": "古い", "lemmaReading": "ふるい", "pos": "い형용사", "conjugation": null, "meaning": "오래되다", "jlpt": "N5", "rubyInSource": false },
-        { "surface": "手紙", "ruby": [{ "base": "手", "rt": "て" }, { "base": "紙", "rt": "がみ" }], "lemma": "手紙", "lemmaReading": "てがみ", "pos": "명사", "conjugation": null, "meaning": "편지", "jlpt": "N5", "rubyInSource": false }
+        { "surface": "三", "ruby": [{ "base": "三", "rt": "さん" }], "pos": "명사", "meaning": "셋, 3", "jlpt": "N5" },
+        { "surface": "　" },
+        { "surface": "古い", "ruby": [{ "base": "古", "rt": "ふる" },{ "base": "い", "rt": "" }], "pos": "い형용사", "meaning": "오래되다", "jlpt": "N5" },
+        { "surface": "手紙", "ruby": [{ "base": "手", "rt": "て" },{ "base": "紙", "rt": "がみ" }], "pos": "명사", "meaning": "편지", "jlpt": "N5" }
       ],
       "grammar": [],
       "uncertain": [],
@@ -25,14 +25,14 @@
       "translation": "오늘은 아침부터 비가 내리고 있었다.",
       "incomplete": false,
       "tokens": [
-        { "surface": "今日", "ruby": [{ "base": "今日", "rt": "きょう" }], "lemma": "今日", "lemmaReading": "きょう", "pos": "명사", "conjugation": null, "meaning": "오늘", "jlpt": "N5", "rubyInSource": false },
-        { "surface": "は", "ruby": [{ "base": "は", "rt": "" }], "lemma": "は", "lemmaReading": "は", "pos": "조사", "conjugation": null, "meaning": "~은/는", "jlpt": "N5", "rubyInSource": false },
-        { "surface": "朝", "ruby": [{ "base": "朝", "rt": "あさ" }], "lemma": "朝", "lemmaReading": "あさ", "pos": "명사", "conjugation": null, "meaning": "아침", "jlpt": "N5", "rubyInSource": false },
-        { "surface": "から", "ruby": [{ "base": "から", "rt": "" }], "lemma": "から", "lemmaReading": "から", "pos": "조사", "conjugation": null, "meaning": "~부터", "jlpt": "N5", "rubyInSource": false },
-        { "surface": "雨", "ruby": [{ "base": "雨", "rt": "あめ" }], "lemma": "雨", "lemmaReading": "あめ", "pos": "명사", "conjugation": null, "meaning": "비", "jlpt": "N5", "rubyInSource": false },
-        { "surface": "が", "ruby": [{ "base": "が", "rt": "" }], "lemma": "が", "lemmaReading": "が", "pos": "조사", "conjugation": null, "meaning": "~이/가", "jlpt": "N5", "rubyInSource": false },
-        { "surface": "降っていた", "ruby": [{ "base": "降", "rt": "ふ" }, { "base": "っていた", "rt": "" }], "lemma": "降る", "lemmaReading": "ふる", "pos": "동사(5단)", "conjugation": "て형+いた", "meaning": "(비가) 내리다", "jlpt": "N5", "rubyInSource": false },
-        { "surface": "。", "ruby": [{ "base": "。", "rt": "" }], "lemma": null, "lemmaReading": null, "pos": null, "conjugation": null, "meaning": null, "jlpt": null, "rubyInSource": false }
+        { "surface": "今日", "ruby": [{ "base": "今日", "rt": "きょう" }], "pos": "명사", "meaning": "오늘", "jlpt": "N5" },
+        { "surface": "は", "pos": "조사", "meaning": "~은/는", "jlpt": "N5" },
+        { "surface": "朝", "ruby": [{ "base": "朝", "rt": "あさ" }], "pos": "명사", "meaning": "아침", "jlpt": "N5" },
+        { "surface": "から", "pos": "조사", "meaning": "~부터", "jlpt": "N5" },
+        { "surface": "雨", "ruby": [{ "base": "雨", "rt": "あめ" }], "pos": "명사", "meaning": "비", "jlpt": "N5" },
+        { "surface": "が", "pos": "조사", "meaning": "~이/가", "jlpt": "N5" },
+        { "surface": "降っていた", "ruby": [{ "base": "降", "rt": "ふ" },{ "base": "っていた", "rt": "" }], "lemma": "降る", "lemmaReading": "ふる", "pos": "동사(5단)", "conjugation": "て형+いた", "meaning": "(비가) 내리다", "jlpt": "N5" },
+        { "surface": "。" }
       ],
       "grammar": [
         { "pattern": "〜ていた", "level": "N4", "explanation": "과거의 어느 시점에 동작이나 상태가 계속되고 있었음을 나타낸다.", "usage": "降る에 붙어 '아침부터 계속 비가 내리고 있었다'는 지속을 나타낸다." }
@@ -47,23 +47,23 @@
       "translation": "\"이 상자를 다룰 때는 조심하렴\" 하고 할머니는 말했다.",
       "incomplete": false,
       "tokens": [
-        { "surface": "「", "ruby": [{ "base": "「", "rt": "" }], "lemma": null, "lemmaReading": null, "pos": null, "conjugation": null, "meaning": null, "jlpt": null, "rubyInSource": false },
-        { "surface": "この", "ruby": [{ "base": "この", "rt": "" }], "lemma": "この", "lemmaReading": "この", "pos": "연체사", "conjugation": null, "meaning": "이", "jlpt": "N5", "rubyInSource": false },
-        { "surface": "箱", "ruby": [{ "base": "箱", "rt": "はこ" }], "lemma": "箱", "lemmaReading": "はこ", "pos": "명사", "conjugation": null, "meaning": "상자", "jlpt": "N4", "rubyInSource": false },
-        { "surface": "の", "ruby": [{ "base": "の", "rt": "" }], "lemma": "の", "lemmaReading": "の", "pos": "조사", "conjugation": null, "meaning": "~의", "jlpt": "N5", "rubyInSource": false },
-        { "surface": "取り扱い", "ruby": [{ "base": "取", "rt": "と" }, { "base": "り", "rt": "" }, { "base": "扱", "rt": "あつか" }, { "base": "い", "rt": "" }], "lemma": "取り扱い", "lemmaReading": "とりあつかい", "pos": "명사", "conjugation": null, "meaning": "취급, 다루기", "jlpt": "N2", "rubyInSource": false },
-        { "surface": "に", "ruby": [{ "base": "に", "rt": "" }], "lemma": "に", "lemmaReading": "に", "pos": "조사", "conjugation": null, "meaning": "~에", "jlpt": "N5", "rubyInSource": false },
-        { "surface": "は", "ruby": [{ "base": "は", "rt": "" }], "lemma": "は", "lemmaReading": "は", "pos": "조사", "conjugation": null, "meaning": "~은/는", "jlpt": "N5", "rubyInSource": false },
-        { "surface": "気", "ruby": [{ "base": "気", "rt": "き" }], "lemma": "気", "lemmaReading": "き", "pos": "명사", "conjugation": null, "meaning": "주의, 마음", "jlpt": "N5", "rubyInSource": false },
-        { "surface": "を", "ruby": [{ "base": "を", "rt": "" }], "lemma": "を", "lemmaReading": "を", "pos": "조사", "conjugation": null, "meaning": "~을/를", "jlpt": "N5", "rubyInSource": false },
-        { "surface": "つけて", "ruby": [{ "base": "つけて", "rt": "" }], "lemma": "つける", "lemmaReading": "つける", "pos": "동사(1단)", "conjugation": "て형", "meaning": "(주의를) 기울이다", "jlpt": "N4", "rubyInSource": false },
-        { "surface": "ください", "ruby": [{ "base": "ください", "rt": "" }], "lemma": "くださる", "lemmaReading": "くださる", "pos": "동사(5단)", "conjugation": "명령형", "meaning": "~해 주세요", "jlpt": "N5", "rubyInSource": false },
-        { "surface": "」", "ruby": [{ "base": "」", "rt": "" }], "lemma": null, "lemmaReading": null, "pos": null, "conjugation": null, "meaning": null, "jlpt": null, "rubyInSource": false },
-        { "surface": "と", "ruby": [{ "base": "と", "rt": "" }], "lemma": "と", "lemmaReading": "と", "pos": "조사", "conjugation": null, "meaning": "~라고 (인용)", "jlpt": "N5", "rubyInSource": false },
-        { "surface": "祖母", "ruby": [{ "base": "祖", "rt": "そ" }, { "base": "母", "rt": "ぼ" }], "lemma": "祖母", "lemmaReading": "そぼ", "pos": "명사", "conjugation": null, "meaning": "할머니", "jlpt": "N4", "rubyInSource": true },
-        { "surface": "は", "ruby": [{ "base": "は", "rt": "" }], "lemma": "は", "lemmaReading": "は", "pos": "조사", "conjugation": null, "meaning": "~은/는", "jlpt": "N5", "rubyInSource": false },
-        { "surface": "言った", "ruby": [{ "base": "言", "rt": "い" }, { "base": "った", "rt": "" }], "lemma": "言う", "lemmaReading": "いう", "pos": "동사(5단)", "conjugation": "과거", "meaning": "말하다", "jlpt": "N5", "rubyInSource": false },
-        { "surface": "。", "ruby": [{ "base": "。", "rt": "" }], "lemma": null, "lemmaReading": null, "pos": null, "conjugation": null, "meaning": null, "jlpt": null, "rubyInSource": false }
+        { "surface": "「" },
+        { "surface": "この", "pos": "연체사", "meaning": "이", "jlpt": "N5" },
+        { "surface": "箱", "ruby": [{ "base": "箱", "rt": "はこ" }], "pos": "명사", "meaning": "상자", "jlpt": "N4" },
+        { "surface": "の", "pos": "조사", "meaning": "~의", "jlpt": "N5" },
+        { "surface": "取り扱い", "ruby": [{ "base": "取", "rt": "と" },{ "base": "り", "rt": "" },{ "base": "扱", "rt": "あつか" },{ "base": "い", "rt": "" }], "pos": "명사", "meaning": "취급, 다루기", "jlpt": "N2" },
+        { "surface": "に", "pos": "조사", "meaning": "~에", "jlpt": "N5" },
+        { "surface": "は", "pos": "조사", "meaning": "~은/는", "jlpt": "N5" },
+        { "surface": "気", "ruby": [{ "base": "気", "rt": "き" }], "pos": "명사", "meaning": "주의, 마음", "jlpt": "N5" },
+        { "surface": "を", "pos": "조사", "meaning": "~을/를", "jlpt": "N5" },
+        { "surface": "つけて", "lemma": "つける", "lemmaReading": "つける", "pos": "동사(1단)", "conjugation": "て형", "meaning": "(주의를) 기울이다", "jlpt": "N4" },
+        { "surface": "ください", "lemma": "くださる", "lemmaReading": "くださる", "pos": "동사(5단)", "conjugation": "명령형", "meaning": "~해 주세요", "jlpt": "N5" },
+        { "surface": "」" },
+        { "surface": "と", "pos": "조사", "meaning": "~라고 (인용)", "jlpt": "N5" },
+        { "surface": "祖母", "ruby": [{ "base": "祖", "rt": "そ" },{ "base": "母", "rt": "ぼ" }], "pos": "명사", "meaning": "할머니", "jlpt": "N4", "rubyInSource": true },
+        { "surface": "は", "pos": "조사", "meaning": "~은/는", "jlpt": "N5" },
+        { "surface": "言った", "ruby": [{ "base": "言", "rt": "い" },{ "base": "った", "rt": "" }], "lemma": "言う", "lemmaReading": "いう", "pos": "동사(5단)", "conjugation": "과거", "meaning": "말하다", "jlpt": "N5" },
+        { "surface": "。" }
       ],
       "grammar": [
         { "pattern": "〜には気をつける", "level": "N3", "explanation": "'~에는 주의하다'. には는 대상을 다른 것과 구별해 강조한다.", "usage": "取り扱い에 には가 붙어 '다루는 것만큼은 조심하라'는 강조가 된다." },
@@ -79,26 +79,28 @@
       "translation": "상자 안에는 색이 바랜 편지가 한 통 들어 있었다.",
       "incomplete": false,
       "tokens": [
-        { "surface": "箱", "ruby": [{ "base": "箱", "rt": "はこ" }], "lemma": "箱", "lemmaReading": "はこ", "pos": "명사", "conjugation": null, "meaning": "상자", "jlpt": "N4", "rubyInSource": false },
-        { "surface": "の", "ruby": [{ "base": "の", "rt": "" }], "lemma": "の", "lemmaReading": "の", "pos": "조사", "conjugation": null, "meaning": "~의", "jlpt": "N5", "rubyInSource": false },
-        { "surface": "中", "ruby": [{ "base": "中", "rt": "なか" }], "lemma": "中", "lemmaReading": "なか", "pos": "명사", "conjugation": null, "meaning": "안", "jlpt": "N5", "rubyInSource": false },
-        { "surface": "に", "ruby": [{ "base": "に", "rt": "" }], "lemma": "に", "lemmaReading": "に", "pos": "조사", "conjugation": null, "meaning": "~에", "jlpt": "N5", "rubyInSource": false },
-        { "surface": "は", "ruby": [{ "base": "は", "rt": "" }], "lemma": "は", "lemmaReading": "は", "pos": "조사", "conjugation": null, "meaning": "~은/는", "jlpt": "N5", "rubyInSource": false },
-        { "surface": "、", "ruby": [{ "base": "、", "rt": "" }], "lemma": null, "lemmaReading": null, "pos": null, "conjugation": null, "meaning": null, "jlpt": null, "rubyInSource": false },
-        { "surface": "色", "ruby": [{ "base": "色", "rt": "いろ" }], "lemma": "色", "lemmaReading": "いろ", "pos": "명사", "conjugation": null, "meaning": "색", "jlpt": "N5", "rubyInSource": false },
-        { "surface": "の", "ruby": [{ "base": "の", "rt": "" }], "lemma": "の", "lemmaReading": "の", "pos": "조사", "conjugation": null, "meaning": "~이 (주격)", "jlpt": "N5", "rubyInSource": false },
-        { "surface": "〓", "ruby": [{ "base": "〓", "rt": "" }], "lemma": null, "lemmaReading": null, "pos": null, "conjugation": null, "meaning": null, "jlpt": null, "rubyInSource": false },
-        { "surface": "せた", "ruby": [{ "base": "せた", "rt": "" }], "lemma": "褪せる", "lemmaReading": "あせる", "pos": "동사(1단)", "conjugation": "과거", "meaning": "(색이) 바래다", "jlpt": null, "rubyInSource": false },
-        { "surface": "手紙", "ruby": [{ "base": "手", "rt": "て" }, { "base": "紙", "rt": "がみ" }], "lemma": "手紙", "lemmaReading": "てがみ", "pos": "명사", "conjugation": null, "meaning": "편지", "jlpt": "N5", "rubyInSource": false },
-        { "surface": "が", "ruby": [{ "base": "が", "rt": "" }], "lemma": "が", "lemmaReading": "が", "pos": "조사", "conjugation": null, "meaning": "~이/가", "jlpt": "N5", "rubyInSource": false },
-        { "surface": "一通", "ruby": [{ "base": "一", "rt": "いっ" }, { "base": "通", "rt": "つう" }], "lemma": "一通", "lemmaReading": "いっつう", "pos": "명사", "conjugation": null, "meaning": "한 통", "jlpt": "N3", "rubyInSource": false },
-        { "surface": "入っていた", "ruby": [{ "base": "入", "rt": "はい" }, { "base": "っていた", "rt": "" }], "lemma": "入る", "lemmaReading": "はいる", "pos": "동사(5단)", "conjugation": "て형+いた", "meaning": "들어 있다", "jlpt": "N5", "rubyInSource": false },
-        { "surface": "。", "ruby": [{ "base": "。", "rt": "" }], "lemma": null, "lemmaReading": null, "pos": null, "conjugation": null, "meaning": null, "jlpt": null, "rubyInSource": false }
+        { "surface": "箱", "ruby": [{ "base": "箱", "rt": "はこ" }], "pos": "명사", "meaning": "상자", "jlpt": "N4" },
+        { "surface": "の", "pos": "조사", "meaning": "~의", "jlpt": "N5" },
+        { "surface": "中", "ruby": [{ "base": "中", "rt": "なか" }], "pos": "명사", "meaning": "안", "jlpt": "N5" },
+        { "surface": "に", "pos": "조사", "meaning": "~에", "jlpt": "N5" },
+        { "surface": "は", "pos": "조사", "meaning": "~은/는", "jlpt": "N5" },
+        { "surface": "、" },
+        { "surface": "色", "ruby": [{ "base": "色", "rt": "いろ" }], "pos": "명사", "meaning": "색", "jlpt": "N5" },
+        { "surface": "の", "pos": "조사", "meaning": "~이 (주격)", "jlpt": "N5" },
+        { "surface": "〓" },
+        { "surface": "せた", "lemma": "褪せる", "lemmaReading": "あせる", "pos": "동사(1단)", "conjugation": "과거", "meaning": "(색이) 바래다" },
+        { "surface": "手紙", "ruby": [{ "base": "手", "rt": "て" },{ "base": "紙", "rt": "がみ" }], "pos": "명사", "meaning": "편지", "jlpt": "N5" },
+        { "surface": "が", "pos": "조사", "meaning": "~이/가", "jlpt": "N5" },
+        { "surface": "一通", "ruby": [{ "base": "一", "rt": "いっ" },{ "base": "通", "rt": "つう" }], "pos": "명사", "meaning": "한 통", "jlpt": "N3" },
+        { "surface": "入っていた", "ruby": [{ "base": "入", "rt": "はい" },{ "base": "っていた", "rt": "" }], "lemma": "入る", "lemmaReading": "はいる", "pos": "동사(5단)", "conjugation": "て형+いた", "meaning": "들어 있다", "jlpt": "N5" },
+        { "surface": "。" }
       ],
       "grammar": [
         { "pattern": "명사절 안의 の(=が)", "level": "N3", "explanation": "명사를 꾸미는 절 안에서 주어를 나타내는 が는 の로 바꿔 쓸 수 있다.", "usage": "'色が褪せた手紙'의 が가 の로 바뀌어 '색이 바랜 편지'가 된다." }
       ],
-      "uncertain": [{ "index": 0, "candidates": ["褪"] }],
+      "uncertain": [
+        { "index": 0, "candidates": ["褪"] }
+      ],
       "uncertainNote": "사진이 흐려 한 글자를 읽을 수 없음. 뒤의 せた와 문맥으로 보아 褪(あ)せた로 추정."
     },
     {
@@ -108,12 +110,12 @@
       "translation": "봉투를 뜯자 그리운…",
       "incomplete": true,
       "tokens": [
-        { "surface": "封", "ruby": [{ "base": "封", "rt": "ふう" }], "lemma": "封", "lemmaReading": "ふう", "pos": "명사", "conjugation": null, "meaning": "봉한 곳", "jlpt": "N1", "rubyInSource": false },
-        { "surface": "を", "ruby": [{ "base": "を", "rt": "" }], "lemma": "を", "lemmaReading": "を", "pos": "조사", "conjugation": null, "meaning": "~을/를", "jlpt": "N5", "rubyInSource": false },
-        { "surface": "切る", "ruby": [{ "base": "切", "rt": "き" }, { "base": "る", "rt": "" }], "lemma": "切る", "lemmaReading": "きる", "pos": "동사(5단)", "conjugation": null, "meaning": "뜯다, 자르다", "jlpt": "N5", "rubyInSource": false },
-        { "surface": "と", "ruby": [{ "base": "と", "rt": "" }], "lemma": "と", "lemmaReading": "と", "pos": "조사", "conjugation": null, "meaning": "~하자", "jlpt": "N4", "rubyInSource": false },
-        { "surface": "、", "ruby": [{ "base": "、", "rt": "" }], "lemma": null, "lemmaReading": null, "pos": null, "conjugation": null, "meaning": null, "jlpt": null, "rubyInSource": false },
-        { "surface": "懐かしい", "ruby": [{ "base": "懐", "rt": "なつ" }, { "base": "かしい", "rt": "" }], "lemma": "懐かしい", "lemmaReading": "なつかしい", "pos": "い형용사", "conjugation": null, "meaning": "그립다", "jlpt": "N3", "rubyInSource": false }
+        { "surface": "封", "ruby": [{ "base": "封", "rt": "ふう" }], "pos": "명사", "meaning": "봉한 곳", "jlpt": "N1" },
+        { "surface": "を", "pos": "조사", "meaning": "~을/를", "jlpt": "N5" },
+        { "surface": "切る", "ruby": [{ "base": "切", "rt": "き" },{ "base": "る", "rt": "" }], "pos": "동사(5단)", "meaning": "뜯다, 자르다", "jlpt": "N5" },
+        { "surface": "と", "pos": "조사", "meaning": "~하자", "jlpt": "N4" },
+        { "surface": "、" },
+        { "surface": "懐かしい", "ruby": [{ "base": "懐", "rt": "なつ" },{ "base": "かしい", "rt": "" }], "pos": "い형용사", "meaning": "그립다", "jlpt": "N3" }
       ],
       "grammar": [
         { "pattern": "〜と（계기）", "level": "N3", "explanation": "앞의 동작에 이어 뒤의 일이 일어났음을 나타낸다. 소설에서 '~하자, ~하니'로 자주 쓰인다.", "usage": "봉투를 뜯은 직후에 그리운 무언가가 나타났다는 흐름을 만든다." }

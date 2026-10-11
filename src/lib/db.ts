@@ -2,8 +2,8 @@ import Dexie, { type EntityTable } from 'dexie'
 
 export type JlptLevel = 'N5' | 'N4' | 'N3' | 'N2' | 'N1'
 export type FuriganaMode = 'all' | 'level' | 'none'
-/** gemini-3.8-flash는 MINIMAL을 지원하지 않아 선택지에서 뺀다. */
-export type ThinkingLevel = 'LOW' | 'MEDIUM' | 'HIGH'
+/** 모델마다 지원 수준이 다르다(lib/models.ts). gemini-3.8-flash는 MINIMAL 미지원. */
+export type ThinkingLevel = 'MINIMAL' | 'LOW' | 'MEDIUM' | 'HIGH'
 
 export interface Settings {
   apiKey: string
@@ -12,6 +12,8 @@ export interface Settings {
   furiganaMode: FuriganaMode
   thinkingLevel: ThinkingLevel
   demoMode: boolean
+  /** 결과 화면 하단에 소요 시간·토큰 수 표시 */
+  showStats: boolean
 }
 
 export const DEFAULT_MODEL = 'gemini-3.8-flash'
@@ -23,6 +25,7 @@ export const DEFAULT_SETTINGS: Settings = {
   furiganaMode: 'level',
   thinkingLevel: 'LOW',
   demoMode: false,
+  showStats: true,
 }
 
 /** 분석 기록. analysis는 3단계에서 zod 타입으로 좁힌다. */

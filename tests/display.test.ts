@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import novel from './fixtures/novel-vertical.json'
 import jlpt from './fixtures/jlpt-horizontal.json'
-import { analysisSchema, findInconsistencies, warnInconsistencies, type Analysis, type Token } from '../src/prompts/schema'
+import { findInconsistencies, parseAnalysis, warnInconsistencies, type Analysis, type Token, type WireAnalysis } from '../src/prompts/schema'
 import { displayableReading, prepareForDisplay, sentenceReading, showFurigana } from '../src/lib/display'
 import { isKana, toHiragana } from '../src/lib/kana'
 
@@ -20,11 +20,11 @@ const tok = (surface: string, ruby: [string, string][], extra: Partial<Token> = 
 
 describe('문장 읽기 계산', () => {
   it('fixture 문장들의 읽기', () => {
-    const n = prepareForDisplay(analysisSchema.parse(novel)).sentences
+    const n = prepareForDisplay(parseAnalysis(novel)).sentences
     expect(n[1].reading).toBe('きょうはあさからあめがふっていた')
     expect(n[2].reading).toBe('このはこのとりあつかいにはきをつけてくださいとそぼはいった')
     expect(n[3].reading).toBe('はこのなかにはいろの〓せたてがみがいっつうはいっていた')
-    const j = prepareForDisplay(analysisSchema.parse(jlpt)).sentences
+    const j = prepareForDisplay(parseAnalysis(jlpt)).sentences
     expect(j[2].reading).toBe('このきかいはきょうじゅうにしゅうりことになっている')
   })
 
@@ -42,7 +42,7 @@ describe('문장 읽기 계산', () => {
 })
 
 describe('문장부호만 있는 문장은 앞 문장에 합친다', () => {
-  const base = analysisSchema.parse(novel)
+  const base = parseAnalysis(novel)
   const punctOnly = { ...base.sentences[1], id: 99, text: '」。', tokens: [tok('」', [['」', '']], { lemma: null }), tok('。', [['。', '']], { lemma: null })], grammar: [] }
   const withStray: Analysis = { ...base, sentences: [base.sentences[0], base.sentences[1], punctOnly, base.sentences[2]] }
 
@@ -75,10 +75,10 @@ describe('가나 검사', () => {
   })
 
   it('lemmaReading·rt에 가나가 아니면 경고, 시트에서는 숨김', () => {
-    const broken = structuredClone(novel)
+    const broken = structuredClone(novel) as WireAnalysis
     broken.sentences[1].tokens[0].lemmaReading = '도'
-    broken.sentences[1].tokens[2].ruby[0].rt = 'asa'
-    const parsed = analysisSchema.parse(broken)
+    broken.sentences[1].tokens[2].ruby![0].rt = 'asa'
+    const parsed = parseAnalysis(broken)
     expect(findInconsistencies(parsed).map((i) => i.message)).toEqual([
       '"今日"의 lemmaReading에 가나 이외 문자: "도"',
       '"朝"의 rt에 가나 이외 문자: "asa"',
